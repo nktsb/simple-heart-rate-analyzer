@@ -2,12 +2,12 @@
 
 A lightweight C library for detecting heart rate (BPM) from a photoplethysmographic (PPG) signal, based on local extrema detection, threshold crossing, and hysteresis.
 
-- [📈 Algorithm Overview](#algorithm-overview)
-- [⚙️ Signal Requirements](#signal-requirements)
-- [🧩 API Quick Overview](#api-quick-overview)
-- [🚀 How to Use](#how-to-use)
-- [🔬 Tested Hardware](#tested-hardware)
-- [⚠️ Known Limitations](#known-limitations)
+- [📈 Algorithm Overview](#📈-algorithm-overview)
+- [⚙️ Signal Requirements](#⚙️-signal-requirements)
+- [🧩 API Quick Overview](#🧩-api-quick-overview)
+- [🚀 How to Use](#🚀-how-to-use)
+- [🔬 Tested Hardware](#🔬-tested-hardware)
+- [⚠️ Known Limitations](#⚠️-known-limitations)
 
 ## 📈 Algorithm Overview
 
@@ -68,7 +68,7 @@ typedef struct pulsomteter {
     const int32_t hysteresis_div;     ///< Division factor for hysteresis calculation
 
     int32_t beat_threshold;           ///< Dynamic beat threshold (midpoint between extrema)
-    int64_t prev_beat_ts;             ///< Timestamp of previous detected beat
+    uint32_t prev_beat_ts;            ///< Timestamp of previous detected beat
 
     const float heart_rate_max_val;   ///< Max allowed heart rate (bpm)
     const float heart_rate_min_val;   ///< Min allowed heart rate (bpm)
@@ -80,7 +80,7 @@ typedef struct pulsomteter {
 Functions:
 
 ```c
-hr_analyzer_init(int32_t hysteresis_div);
+void hr_analyzer_init(int32_t hysteresis_div);
 
 bool hr_analyzer_process_sample(hr_analyzer_st *hr_analyzer, float *hr_val, 
         int32_t new_sample_val, uint32_t current_time_ms);
