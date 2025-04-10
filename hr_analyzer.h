@@ -41,7 +41,7 @@ typedef struct pulsomteter {
     const int32_t hysteresis_div;     ///< Division factor for hysteresis calculation
 
     int32_t beat_threshold;           ///< Dynamic beat threshold (midpoint between extrema)
-    int64_t prev_beat_ts;             ///< Timestamp of previous detected beat
+    uint32_t prev_beat_ts;            ///< Timestamp of previous detected beat
 
     const float heart_rate_max_val;   ///< Max allowed heart rate (bpm)
     const float heart_rate_min_val;   ///< Min allowed heart rate (bpm)
