@@ -143,6 +143,8 @@ Result: extrema may not be detected → delayed beat detection.
 
 💡 You can reset or reinitialize the analyzer if this persists.
 
+♻️ Restart of beat detection: If no new pulse is detected within 2 seconds, the algorithm automatically resets the detection process and begins searching for a new beat. This behavior is already implemented within the main function.
+
 ## 🤝 Contributing
 
 Pull requests welcome!

@@ -26,8 +26,8 @@ static void hr_analyzer_reset_local_max_min(hr_analyzer_st *hr_analyzer)
 
 static void hr_analyzer_set_new_hysteresis(hr_analyzer_st *hr_analyzer)
 {
-    hr_analyzer->hysteresis = (hr_analyzer->local_max_val - 
-            hr_analyzer->local_min_val) / hr_analyzer->hysteresis_div;
+	hr_analyzer->hysteresis = (hr_analyzer->local_max_val - 
+		hr_analyzer->local_min_val) / hr_analyzer->hysteresis_div;
 }
 
 void hr_analyzer_reset(hr_analyzer_st *hr_analyzer)
