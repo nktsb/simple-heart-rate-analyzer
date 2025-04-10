@@ -82,8 +82,8 @@ Functions:
 ```c
 hr_analyzer_init(int32_t hysteresis_div);
 
-float hr_analyzer_process_sample(hr_analyzer_st *analyzer, int32_t new_sample_val, 
-        uint32_t current_time_ms);
+bool hr_analyzer_process_sample(hr_analyzer_st *hr_analyzer, float *hr_val, 
+        int32_t new_sample_val, uint32_t current_time_ms);
 
 void hr_analyzer_deinit(hr_analyzer_st *analyzer);
 ```
@@ -102,20 +102,23 @@ void hr_analyzer_deinit(hr_analyzer_st *analyzer);
 2. Feed in samples and check for beats
 
     ```c
-    float bpm = hr_analyzer_process_sample(analyzer, new_sample_val, current_time_ms);
+    bool = hr_analyzer_process_sample(analyzer, &heart_rate_val, new_sample_val, current_time_ms);
     ```
 
     📥 `new_sample_val`: an integer value from the PPG sensor. It should be filtered externally before calling this function.
 
     ⏱️ `current_time_ms`: current timestamp in milliseconds (e.g. from a system tick or uptime counter).
+    
+    📤 `heart_rate_val`: a pointer to a float where the analyzer writes the latest heart rate (in bpm). If a new beat was detected or the internal state was reset due to inactivity, the value is updated.
 
     ✅ Returns:
 
-    * A float BPM value if a beat was detected and heart rate was calculated
-    * 0.0f if not enough data yet
-    * -1.0f on error
+    * `true` — if the BPM value was updated (either a new beat was detected or internal reset was triggered)
+    * `false` — if no beat was detected and the returned BPM value is the last known value
 
-    Internally, the function tracks local minima and maxima, and only when both are found does it compute the threshold and check for a falling edge crossing. If this crossing is found, it calculates the heart rate based on the time between this beat and the previous one. If no beat has been detected for 2 seconds, it resets internal state.
+    Internally, the function tracks local minima and maxima. Once both are detected, it computes the dynamic threshold and checks for a crossing on the falling edge. When detected, it calculates the BPM from the time difference between beats.
+
+    ⚠️ If no beat has been detected for more than 2 seconds, the analyzer resets its internal state, and `*bpm` will be set to HR_ANALYZER_EMPTY.
 
 3. Deinitialize
 

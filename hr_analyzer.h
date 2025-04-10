@@ -65,14 +65,23 @@ hr_analyzer_st *hr_analyzer_init(int32_t hysteresis_div);
 void hr_analyzer_deinit(hr_analyzer_st *hr_analyzer);
 
 /**
- * @brief Feeds a new sample and returns the current heart rate estimation.
+ * @brief Feeds a new sample into the heart rate analyzer and optionally returns a new BPM value.
  *
- * @param hr_analyzer Pointer to analyzer instance.
+ * This function processes a single filtered PPG sample, detects local extrema,
+ * and checks for a beat (threshold crossing on falling edge). If a new beat is detected,
+ * it calculates and returns the new heart rate value via the output pointer.
+ *
+ * @param hr_analyzer Pointer to the heart rate analyzer instance.
+ * @param hr_val Pointer to a float where the calculated BPM will be stored.
+ *               If no new value is available, the last valid value is returned.
+ * 				 If waiting new beat is timed out, *hr_val = HR_ANALYZER_EMPTY
  * @param new_sample_val New filtered PPG signal sample.
- * @param current_time_ms Timestamp in milliseconds.
- * @return Latest heart rate in bpm, or 0.0f if not enough data yet.
+ * @param current_time_ms Current timestamp in milliseconds.
+ *
+ * @return `true` if a new BPM value was calculated (beat detected or timeout reset),
+ *         `false` if no update occurred.
  */
-float hr_analyzer_process_sample(hr_analyzer_st *hr_analyzer, int32_t new_sample_val,
-		uint32_t current_time_ms);
+bool hr_analyzer_process_sample(hr_analyzer_st *hr_analyzer, float *hr_val,
+    int32_t new_sample_val, uint32_t current_time_ms);
 
 #endif /* __HR_ANALYZER_H_ */
