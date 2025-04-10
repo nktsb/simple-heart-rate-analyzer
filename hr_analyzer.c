@@ -72,8 +72,11 @@ static inline void hr_analyzer_find_local_max(hr_analyzer_st *hr_analyzer, int32
 	switch (hr_analyzer->local_max_state)
 	{
 		case LOCAL_EXTM_IDLE:
-			hr_analyzer->local_max_val = new_sample_val;
-			hr_analyzer->local_max_state = LOCAL_EXTM_STARTED;
+			if (hr_analyzer->local_min_state == LOCAL_EXTM_FOUND)
+			{
+				hr_analyzer->local_max_val = new_sample_val;
+				hr_analyzer->local_max_state = LOCAL_EXTM_STARTED;
+			}
 			break;
 		case LOCAL_EXTM_STARTED:
 			if (new_sample_val <= (hr_analyzer->local_max_val - hr_analyzer->hysteresis))

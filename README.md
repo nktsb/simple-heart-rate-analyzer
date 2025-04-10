@@ -1,6 +1,6 @@
 # ❤️ Simple Heart Rate Analyzer
 
-A lightweight C library for detecting heart rate (BPM) from a photoplethysmographic (PPG) signal, based on local extrema detection, threshold crossing, and hysteresis.
+A lightweight C library for detecting heart rate (BPM) from a photoplethysmographic (PPG) signal, based on local extrema detection, threshold crossing, and hysteresis. 
 
 - [📈 Algorithm Overview](#📈-algorithm-overview)
 - [⚙️ Signal Requirements](#⚙️-signal-requirements)
@@ -31,6 +31,10 @@ A lightweight C library for detecting heart rate (BPM) from a photoplethysmograp
 
     The `hysteresis_div` parameter controls how sensitive the algorithm is: smaller values make it stricter, higher values more permissive.
 
+###  ⭐️ Main Feature
+
+The baseline of the pulsometer signal may drift upwards or downwards over time, but the algorithm is designed to handle this. It will still accurately calculate the heart rate bpm even if the baseline shifts.
+
 ## ⚙️ Signal Requirements
 
 💡 This library does not perform any internal signal filtering. It assumes you're feeding it pre-filtered PPG samples.
@@ -45,7 +49,6 @@ To work reliably, the algorithm expects:
 At minimum:
 
 - Low-pass filtering (e.g., IIR or moving average)
-- Baseline correction (if your sensor has drift)
 - Optional: Median filtering on the output BPM to reduce jitter
 
 This separation gives you full flexibility — use your own DSP library, CMSIS-DSP, or simple rolling filters tailored to your platform.
